@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Học Từ Vựng Tiếng Anh Qua Crossword</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-logo">
+        <span class="logo-icon">🧩</span>
+        <div>
+          <h1>Smart Crossword Generator</h1>
+          <p class="subtitle">Tự động sinh ô chữ từ vựng tiếng Anh thông minh & Ôn tập trực quan</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="btnOpenModal" class="btn btn-primary btn-glow">
+          ➕ Tạo bài tập mới
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <div class="app-body">
+      <!-- Left Sidebar: History / Saved exercises -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div>
+            <h3>📚 Bài tập đã lưu</h3>
+            <span id="exerciseCountBadge" class="badge">0</span>
+          </div>
+          <button id="btnToggleSelectMode" class="btn btn-sm btn-outline select-mode-btn" title="Chọn nhiều bài tập để xóa" onclick="window.toggleSelectMode && window.toggleSelectMode();">
+            ☑️ Chọn
+          </button>
+        </div>
+        <!-- Thanh thao tác khi bật chế độ Chọn nhiều bài tập -->
+        <div id="batchActionToolbar" class="batch-action-bar" style="display: none;">
+          <div class="batch-action-row-top">
+            <label class="batch-checkbox-label">
+              <input type="checkbox" id="chkSelectAll">
+              <span>Chọn tất cả</span>
+            </label>
+            <span id="selectedCountText" class="selected-count-tag">Đã chọn: 0</span>
+          </div>
+          <div class="batch-action-row-bottom">
+            <button id="btnDeleteSelected" class="btn btn-sm btn-danger btn-delete-batch" disabled onclick="window.handleBatchDelete && window.handleBatchDelete();">
+              🗑️ Xóa bài tập (<span id="deleteCountBadge">0</span>)
+            </button>
+            <button id="btnCancelSelectMode" class="btn btn-sm btn-outline btn-close-batch" title="Đóng chế độ chọn" onclick="window.toggleSelectMode && window.toggleSelectMode(false);">
+              ✕
+            </button>
+          </div>
+        </div>
+        <div id="exerciseList" class="exercise-list">
+          <div class="empty-state">Đang tải danh sách bài tập...</div>
+        </div>
+      </aside>
+
+      <!-- Center / Right: Crossword Player -->
+      <main class="main-content">
+        <!-- Crossword Display / Play Screen -->
+        <section id="puzzleSection" class="card puzzle-card">
+          <div class="card-header puzzle-header">
+            <div class="puzzle-title-area">
+              <div class="title-view-mode" id="titleViewMode">
+                <h2 id="currentExerciseTitle">Tiêu đề bài tập</h2>
+                <button id="btnEditTitle" class="btn-icon" title="Đổi tên bài tập">✏️ Đổi tên</button>
+              </div>
+              <div class="title-edit-mode" id="titleEditMode" style="display: none;">
+                <input type="text" id="editTitleInput" class="input-text-inline">
+                <button id="btnSaveTitle" class="btn btn-sm btn-primary">Lưu</button>
+                <button id="btnCancelTitle" class="btn btn-sm btn-outline">Huỷ</button>
+              </div>
+              <div class="puzzle-meta">
+                <span id="puzzleCreatedTime" class="meta-tag">📅 Hôm nay</span>
+                <span id="puzzlePlacedStats" class="meta-tag">🎯 Đã xếp 20/20 từ</span>
+                <span id="puzzleDimensions" class="meta-tag">📐 Lưới 22x18</span>
+              </div>
+            </div>
+
+            <div class="puzzle-toolbar">
+              <button id="btnReshuffleLayout" class="btn btn-secondary" title="Xáo trộn và sinh bố cục ô chữ mới ngẫu nhiên từ danh sách từ vựng hiện tại">
+                🎲 Đổi bố cục ô chữ mới
+              </button>
+              <button id="btnCheckSolution" class="btn btn-primary">
+                🔍 Kiểm tra bài làm
+              </button>
+              <button id="btnRevealAll" class="btn btn-outline" onclick="window.handleRevealAll && window.handleRevealAll();">
+                👁️ Hiện toàn bộ đáp án
+              </button>
+              <button id="btnClearAnswers" class="btn btn-outline" onclick="window.handleClearAnswers && window.handleClearAnswers();">
+                🔄 Làm lại từ đầu
+              </button>
+              <button id="btnPrint" class="btn btn-outline" title="In hoặc lưu PDF">
+                🖨️ In ra giấy
+              </button>
+            </div>
+          </div>
+
+          <!-- Crossword Workspace: Grid + Clues Side-by-Side -->
+          <div class="crossword-layout-container">
+            <!-- Left: Grid board -->
+            <div class="grid-outer-wrapper">
+              <div class="grid-scroll-area">
+                <div id="crosswordGrid" class="crossword-grid"></div>
+              </div>
+              <div class="grid-legend">
+                <span>💡 Click vào ô hoặc dòng clue để nhập từ. Dùng phím <strong>Backspace</strong> và <strong>mũi tên</strong> để di chuyển.</span>
+              </div>
+            </div>
+
+            <!-- Right: Across & Down Clues list with input blanks -->
+            <div class="clues-panel">
+              <!-- Across Column -->
+              <div class="clue-column">
+                <h3 class="clue-header">Theo chiều ngang (Across)</h3>
+                <div id="acrossCluesList" class="clue-list"></div>
+              </div>
+
+              <!-- Down Column -->
+              <div class="clue-column">
+                <h3 class="clue-header">Theo chiều dọc (Down)</h3>
+                <div id="downCluesList" class="clue-list"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Placeholder when no exercise is loaded -->
+        <div id="noExerciseState" class="card empty-welcome-card" style="display: none;">
+          <div class="welcome-box">
+            <span class="welcome-icon">🎯</span>
+            <h2>Chào mừng bạn đến với Smart Crossword Generator!</h2>
+            <p>Hiện chưa có bài tập nào được chọn. Hãy bấm vào nút bên dưới để tạo ngay một bài tập mới từ danh sách từ vựng của bạn.</p>
+            <button id="btnOpenModalWelcome" class="btn btn-primary btn-lg">
+              ➕ Tạo bài tập mới ngay
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- POPUP MODAL: Nhập danh sách từ vựng -->
+  <div id="inputModal" class="modal-backdrop" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">📝</span>
+          <div>
+            <h3>Tạo bài tập Crossword mới</h3>
+            <p class="modal-subtitle">Dán danh sách từ vựng tiếng Anh (hỗ trợ đầy đủ dấu cách, gạch nối, dấu câu)</p>
+          </div>
+        </div>
+        <button id="btnCloseModal" class="btn-close-modal" title="Đóng popup">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label for="exerciseTitleInput">
+              🏷️ Tên bài tập: <span class="text-muted">(Mặc định là ngày/tháng/năm hôm nay, có thể sửa bất cứ lúc nào)</span>
+            </label>
+            <input type="text" id="exerciseTitleInput" class="input-text" placeholder="Ví dụ: 28/10/2026 hoặc 20 từ vựng Unit 1...">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="textarea-header">
+            <label for="vocabularyInput">
+              📖 Danh sách từ vựng & nghĩa (Mỗi từ 1 dòng, tối thiểu 15 từ):
+            </label>
+            <span id="wordCounter" class="word-counter">Đã phát hiện: <strong>0</strong>/15 từ</span>
+          </div>
+          <textarea id="vocabularyInput" class="input-textarea" rows="9" placeholder="Định dạng: Từ vựng : Nghĩa (hoặc chỉ cần gõ từ vựng)
+Ví dụ:
+apple-pie : bánh táo nướng
+ice cream : kem que mát lạnh
+mother-in-law : mẹ chồng / mẹ vợ
+air-conditioner : máy điều hoà nhiệt độ
+well-known : nổi tiếng, được biết đến rộng rãi
+..."></textarea>
+          <div class="modal-tips-bar">
+            <span>💡 <em>Mẹo:</em> Hệ thống tự động làm sạch và chuyển đổi chính xác các ký tự đặc biệt (khoảng trắng, gạch nối <code>-</code>, <code>_</code>) lên lưới mà vẫn giữ nguyên bản rõ nghĩa.</span>
+            <button type="button" id="btnQuickFill" class="btn-text-action">⚡ Nạp nhanh mẫu 20 từ chữ A</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="btnClearInput" class="btn btn-outline">
+          Xoá trắng
+        </button>
+        <div class="modal-footer-right">
+          <button id="btnCancelModal" class="btn btn-outline">
+            Huỷ bỏ
+          </button>
+          <button id="btnGenerate" class="btn btn-success btn-lg">
+            ✨ Sinh bài tập Crossword ngay
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP MODAL: Thông báo & Xác nhận (Thay thế toàn bộ window.alert / window.confirm) -->
+  <div id="noticeModal" class="modal-backdrop notice-backdrop" style="display: none;">
+    <div class="modal-dialog notice-dialog">
+      <div class="modal-header notice-header">
+        <div class="modal-title-wrap">
+          <span id="noticeIcon" class="notice-icon">💬</span>
+          <h3 id="noticeTitle">Thông báo</h3>
+        </div>
+        <button id="btnCloseNotice" class="btn-close-modal" title="Đóng">&times;</button>
+      </div>
+
+      <div class="modal-body notice-body">
+        <p id="noticeMessage">Nội dung thông báo...</p>
+      </div>
+
+      <div class="modal-footer notice-footer">
+        <button id="btnNoticeCancel" class="btn btn-outline" style="display: none;">Huỷ bỏ</button>
+        <button id="btnNoticeConfirm" class="btn btn-primary">Đồng ý</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

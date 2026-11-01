@@ -1,0 +1,1286 @@
+/* Modern, clean aesthetic matching educational tools */
+:root {
+  --primary: #4361ee;
+  --primary-hover: #3a56d4;
+  --secondary: #3f37c9;
+  --success: #10b981;
+  --success-hover: #059669;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --dark: #0f172a;
+  --slate-800: #1e293b;
+  --slate-700: #334155;
+  --slate-600: #475569;
+  --slate-400: #94a3b8;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --slate-50: #f8fafc;
+  --white: #ffffff;
+  --grid-border: #4f46e5;
+  --grid-cell-active: #dbeafe;
+  --grid-cell-highlight: #eff6ff;
+  --grid-cell-error: #fee2e2;
+  --grid-cell-correct: #d1fae5;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -2px rgba(0,0,0,0.05);
+  --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.1);
+  --shadow-modal: 0 20px 40px -5px rgba(15, 23, 42, 0.25), 0 1px 3px rgba(0,0,0,0.1);
+  --cell-size: 32px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f1f5f9;
+  color: var(--slate-800);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* Container */
+.app-container {
+  max-width: 98vw;
+  width: 100%;
+  margin: 0 auto;
+  padding: 16px 24px;
+}
+
+/* Header */
+.app-header {
+  background: var(--white);
+  padding: 16px 24px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+  border: 1px solid var(--slate-200);
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo-icon {
+  font-size: 2.2rem;
+  background: #e0e7ff;
+  border-radius: 12px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-logo h1 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--dark);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  color: var(--slate-600);
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--white);
+}
+.btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+.btn-glow {
+  box-shadow: 0 4px 14px rgba(67, 97, 238, 0.35);
+}
+
+.btn-secondary {
+  background: #4f46e5;
+  color: var(--white);
+}
+.btn-secondary:hover { background: #4338ca; }
+
+.btn-success {
+  background: var(--success);
+  color: var(--white);
+}
+.btn-success:hover { background: var(--success-hover); }
+
+.btn-danger {
+  background: var(--danger);
+  color: var(--white);
+}
+.btn-danger:hover { background: #dc2626; }
+
+.btn-outline {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  color: var(--slate-700);
+}
+.btn-outline:hover { background: var(--slate-100); border-color: var(--slate-400); }
+
+.btn-lg {
+  padding: 10px 22px;
+  font-size: 0.95rem;
+}
+
+.btn-sm {
+  padding: 4px 10px;
+  font-size: 0.8rem;
+}
+
+.btn-icon {
+  background: none;
+  border: 1px solid var(--slate-200);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--slate-700);
+}
+.btn-icon:hover { background: var(--slate-100); }
+
+.btn-text-action {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+.btn-text-action:hover {
+  color: var(--secondary);
+}
+
+/* Body Layout */
+.app-body {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .app-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Sidebar */
+.sidebar {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--slate-200);
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--slate-200);
+  margin-bottom: 12px;
+}
+
+.sidebar-header h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--slate-800);
+}
+
+.badge {
+  background: #e0e7ff;
+  color: var(--primary);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.exercise-list {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 4px;
+}
+
+.exercise-item {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.exercise-item:hover {
+  background: #f8fafc;
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.exercise-item.active {
+  background: #eff6ff;
+  border-color: var(--primary);
+  border-left: 4px solid var(--primary);
+}
+
+.ex-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.ex-item-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--dark);
+  word-break: break-word;
+}
+
+.ex-item-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.ex-del-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  opacity: 0.5;
+  transition: opacity 0.15s;
+}
+.ex-del-btn:hover { opacity: 1; color: var(--danger); }
+
+.ex-item-meta {
+  font-size: 0.75rem;
+  color: var(--slate-600);
+  margin-top: 4px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--slate-400);
+  font-size: 0.85rem;
+  padding: 24px 8px;
+}
+
+/* Main Content */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--slate-200);
+}
+
+/* Empty welcome */
+.empty-welcome-card {
+  padding: 60px 24px;
+  text-align: center;
+}
+.welcome-box {
+  max-width: 540px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.welcome-icon {
+  font-size: 3.5rem;
+}
+.welcome-box h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--dark);
+}
+.welcome-box p {
+  color: var(--slate-600);
+  font-size: 0.95rem;
+}
+
+/* Form Styles */
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.flex-1 { flex: 1; }
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--slate-700);
+}
+
+.text-muted {
+  font-weight: 400;
+  color: var(--slate-600);
+}
+
+.input-text, .input-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: var(--slate-800);
+  background: var(--slate-50);
+  transition: all 0.15s ease;
+}
+
+.input-text:focus, .input-textarea:focus {
+  outline: none;
+  background: var(--white);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+}
+
+.textarea-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.word-counter {
+  font-size: 0.85rem;
+  color: var(--slate-600);
+}
+.word-counter.valid {
+  color: var(--success);
+}
+.word-counter.invalid {
+  color: var(--danger);
+}
+
+.input-textarea {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+/* Puzzle View */
+.puzzle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.puzzle-title-area {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.title-view-mode {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.title-view-mode h2 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--dark);
+}
+
+.title-edit-mode {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input-text-inline {
+  padding: 4px 10px;
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.puzzle-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.meta-tag {
+  background: var(--slate-100);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: var(--slate-700);
+}
+
+.puzzle-toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Crossword Workspace Layout */
+.crossword-layout-container {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(380px, 460px);
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .crossword-layout-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Grid Board */
+.grid-outer-wrapper {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.grid-scroll-area {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+  padding: 4px;
+}
+
+.crossword-grid {
+  display: inline-grid;
+  background-color: transparent;
+  gap: 0;
+  border: 2px solid #3b82f6;
+  user-select: none;
+}
+
+/* Individual Cell */
+.grid-cell {
+  width: var(--calculated-cell-size, var(--cell-size));
+  height: var(--calculated-cell-size, var(--cell-size));
+  position: relative;
+  background: #fff;
+  border: 1px solid #60a5fa;
+  box-sizing: border-box;
+}
+
+.grid-cell.black-cell {
+  background-color: #e0e7ff;
+  border-color: #60a5fa;
+}
+
+.grid-cell.active-word {
+  background-color: #fef3c7;
+}
+
+.grid-cell.active-cell {
+  background-color: #fed7aa !important;
+  outline: 2px solid #f97316;
+  z-index: 5;
+}
+
+.grid-cell.is-correct {
+  background-color: #d1fae5;
+}
+
+.grid-cell.is-error {
+  background-color: #fee2e2 !important;
+  border-color: #ef4444 !important;
+  color: #b91c1c !important;
+}
+.grid-cell.is-error input.cell-input {
+  color: #b91c1c !important;
+  font-weight: 800 !important;
+}
+
+.grid-cell .cell-number {
+  position: absolute;
+  top: 1px;
+  left: 2px;
+  font-size: 8px;
+  font-weight: 700;
+  color: #1e3a8a;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.grid-cell input.cell-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  color: #0f172a;
+  padding: 0;
+  margin: 0;
+  line-height: var(--calculated-cell-size, var(--cell-size));
+}
+
+.grid-cell input.cell-input:focus {
+  outline: none;
+}
+
+.grid-legend {
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: var(--slate-600);
+  text-align: center;
+}
+
+/* Clues Panel */
+.clues-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+@media (max-width: 768px) {
+  .clues-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+.clue-column {
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  padding: 14px;
+}
+
+.clue-header {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--slate-800);
+  padding-bottom: 8px;
+  border-bottom: 2px solid #cbd5e1;
+  margin-bottom: 12px;
+}
+
+.clue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.clue-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.clue-item:hover {
+  border-color: #3b82f6;
+  box-shadow: var(--shadow-sm);
+}
+
+.clue-item.active {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  border-left: 3px solid #3b82f6;
+}
+
+.clue-title-line {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1e293b;
+  display: flex;
+  gap: 4px;
+  align-items: baseline;
+}
+
+.clue-num {
+  font-weight: 800;
+  color: #2563eb;
+  min-width: 16px;
+}
+
+
+/* Hiển thị loại từ (v), (n), (adj) kế bên nghĩa từ vựng */
+.clue-pos {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #4f46e5;
+  background-color: #e0e7ff;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-right: 4px;
+  font-style: italic;
+}
+.clue-item.active .clue-pos {
+  background-color: #fef08a;
+  color: #854d0e;
+}
+
+.clue-text {
+  flex: 1;
+}
+
+.clue-len {
+  font-style: italic;
+  color: #64748b;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* Real-time clue letter boxes */
+.clue-answer-blank {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  color: #1e293b;
+  padding: 4px 8px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+
+.blank-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 22px;
+  font-weight: 700;
+  border-bottom: 2px solid #94a3b8;
+  color: #0f172a;
+  text-align: center;
+  line-height: 1;
+  transition: all 0.12s ease;
+}
+
+
+.blank-slot.symbol-slot {
+  border-bottom: 2px solid #94a3b8; /* Vẫn hiện dấu gạch dưới như mọi ô khác */
+}
+.clue-item.active .blank-slot.symbol-slot {
+  border-bottom-color: #f59e0b;
+}
+.blank-slot.symbol-slot.has-char {
+  background-color: transparent;
+  color: #64748b;
+}
+
+.blank-slot.has-char {
+  border-bottom-color: #2563eb;
+  color: #1d4ed8;
+  background-color: #e0e7ff;
+  border-radius: 2px 2px 0 0;
+}
+
+.blank-space {
+  display: inline-block;
+  width: 16px;
+  user-select: none;
+}
+.blank-space.blank-hyphen-space {
+  width: 12px;
+}
+
+.blank-hyphen {
+  display: inline-block;
+  font-weight: 800;
+  color: #64748b;
+  padding: 0 2px;
+}
+
+.clue-item.active .blank-slot.is-empty {
+  border-bottom-color: #f59e0b;
+}
+
+.clue-item.active .blank-slot.has-char {
+  background-color: #fef08a;
+  border-bottom-color: #d97706;
+}
+
+/* Popup Modal Base */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-dialog {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-modal);
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--slate-200);
+  animation: scaleUp 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0.5; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+  padding: 18px 24px;
+  background: #f8fafc;
+  border-bottom: 1px solid var(--slate-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-icon {
+  font-size: 1.6rem;
+}
+
+.modal-header h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--dark);
+}
+
+.modal-subtitle {
+  font-size: 0.8rem;
+  color: var(--slate-600);
+}
+
+.btn-close-modal {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: var(--slate-400);
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+.btn-close-modal:hover {
+  color: var(--dark);
+  background: var(--slate-200);
+}
+
+.modal-body {
+  padding: 20px 24px;
+  overflow-y: auto;
+}
+
+.modal-tips-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  gap: 12px;
+  font-size: 0.8rem;
+  color: var(--slate-600);
+  flex-wrap: wrap;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  background: #f8fafc;
+  border-top: 1px solid var(--slate-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-footer-right {
+  display: flex;
+  gap: 10px;
+}
+
+/* ========================================================
+   POPUP THÔNG BÁO & XÁC NHẬN (Thay thế alert & confirm)
+   ======================================================== */
+.notice-backdrop {
+  z-index: 100010; /* Luôn nổi trên cùng, kể cả trên modal input */
+}
+
+.notice-dialog {
+  max-width: 440px;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.35);
+  border: 1px solid var(--slate-200);
+}
+
+.notice-header {
+  padding: 14px 20px;
+}
+
+.notice-icon {
+  font-size: 1.5rem;
+}
+
+.notice-body {
+  padding: 20px 24px;
+  font-size: 0.95rem;
+  color: var(--slate-700);
+  line-height: 1.6;
+}
+
+.notice-footer {
+  padding: 12px 20px;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--dark);
+  color: var(--white);
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  font-size: 0.875rem;
+  font-weight: 600;
+  z-index: 99999;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.toast.toast-error {
+  background: var(--danger);
+}
+.toast.toast-success {
+  background: var(--success);
+}
+
+/* Print Friendly */
+@media print {
+  body { background: white; }
+  .app-header, .sidebar, .puzzle-toolbar, .grid-legend, #toast, .modal-backdrop {
+    display: none !important;
+  }
+  .app-body { display: block; }
+  .crossword-layout-container { display: flex; flex-direction: column; }
+  .card { border: none; box-shadow: none; padding: 0; }
+}
+
+/* Trạng thái bôi đen từ (khi bấm Ctrl + A vào từ) */
+.grid-cell.word-selected {
+  background-color: #fbcfe8 !important; /* Màu hồng phấn / tím nhạt chọn chữ */
+  outline: 2px dashed #ec4899 !important;
+  z-index: 6;
+}
+.grid-cell.word-selected input.cell-input {
+  color: #9d174d !important;
+  font-weight: 800;
+}
+.clue-item.word-selected {
+  border-color: #ec4899 !important;
+  background-color: #fdf2f8 !important;
+  border-left: 4px solid #ec4899 !important;
+}
+
+/* Ô đặc biệt cho dấu gạch nối và dấu cách trên bàn cờ ô chữ */
+.grid-cell.symbol-grid-cell {
+  background-color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: #475569;
+  user-select: none;
+}
+.grid-cell.symbol-grid-cell.hyphen-grid-cell {
+  font-size: 1.1rem;
+  color: #1e293b;
+}
+.grid-cell.symbol-grid-cell.space-grid-cell {
+  background-color: #e2e8f0;
+}
+.grid-cell.symbol-grid-cell .symbol-input {
+  display: none;
+}
+.grid-cell.symbol-grid-cell.active-word {
+  background-color: #fde68a !important; /* Đổi màu theo từ đang chọn */
+}
+
+
+/* Hiệu ứng khi nhập đúng chữ cái hoặc hoàn thành từ */
+.grid-cell.is-correct {
+  background-color: #d1fae5 !important;
+  border-color: #10b981 !important;
+  animation: correctPop 0.25s ease-out;
+}
+.grid-cell.is-correct input.cell-input {
+  color: #065f46 !important;
+  font-weight: 800 !important;
+}
+
+/* Khóa ô khi đã nhập đúng */
+.grid-cell.is-locked {
+  background-color: #ecfdf5 !important;
+  border-color: #059669 !important;
+  cursor: default;
+}
+.grid-cell.is-locked input.cell-input {
+  cursor: default;
+  color: #047857 !important;
+  pointer-events: none; /* Không thể focus sửa lại */
+}
+
+/* Khi từ được hoàn thành chính xác 100% */
+.clue-item.word-completed {
+  border-color: #10b981 !important;
+  background-color: #f0fdf4 !important;
+  border-left: 4px solid #10b981 !important;
+}
+.clue-item.word-completed .clue-num {
+  color: #059669 !important;
+}
+.clue-item.word-completed .blank-slot.has-char {
+  background-color: #d1fae5 !important;
+  border-bottom-color: #059669 !important;
+  color: #047857 !important;
+}
+
+@keyframes correctPop {
+  0% { transform: scale(0.92); }
+  50% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+
+/* Nút & Thanh công cụ Chọn nhiều bài tập */
+.sidebar-header > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.select-mode-btn {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.batch-action-bar {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  animation: fadeIn 0.15s ease-out;
+}
+
+.batch-action-row-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.batch-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--slate-700);
+  user-select: none;
+}
+
+.batch-checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.selected-count-tag {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.75rem;
+  background: #e0e7ff;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.batch-action-row-bottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.btn-delete-batch {
+  flex: 1;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.btn-delete-batch:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-close-batch {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  color: var(--slate-600);
+}
+
+/* Checkbox riêng cho từng bài tập trong danh sách */
+.exercise-checkbox-wrap {
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+}
+
+.exercise-checkbox {
+  width: 17px;
+  height: 17px;
+  cursor: pointer;
+  accent-color: var(--primary);
+}
+
+.exercise-item.is-selected-for-delete {
+  background-color: #fee2e2 !important;
+  border-color: #f87171 !important;
+}
+
+.exercise-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Mặc định ẩn nút loa phát âm */
+.btn-speak-clue {
+  display: none;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  transition: transform 0.15s ease;
+  user-select: none;
+}
+.btn-speak-clue:hover {
+  transform: scale(1.25);
+}
+/* Chỉ hiển thị loa khi từ đó đã nhập đúng (word-completed) HOẶC khi đã bấm kiểm tra bài làm (show-audio) */
+.clue-item.word-completed .btn-speak-clue,
+.clue-item.show-audio .btn-speak-clue {
+  display: inline-block;
+  animation: fadeInAudio 0.3s ease-out;
+}
+@keyframes fadeInAudio {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: scale(1); }
+}
+.btn-speak-clue:hover { transform: scale(1.25); opacity: 1; }
+
+/* Hiệu ứng và kiểu dáng khi nút đổi bố cục bị khóa */
+#btnReshuffleLayout:disabled,
+#btnReshuffleLayout.is-locked {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+  filter: grayscale(80%) !important;
+  pointer-events: none !important;
+}
+
+.select-mode-btn { cursor: pointer !important; pointer-events: auto !important; position: relative; z-index: 10; }
+
+/* ========================================================
+   RESPONSIVE DESIGN CHO THIẾT BỊ DI ĐỘNG (MOBILE & TABLET)
+   ======================================================== */
+@media (max-width: 768px) {
+  /* Giảm lề ngoài toàn trang */
+  .app-container {
+    padding: 10px;
+  }
+  .app-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 14px;
+  }
+  .header-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  /* Thanh công cụ bài tập trên mobile */
+  .puzzle-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .puzzle-toolbar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .puzzle-toolbar .btn {
+    padding: 8px 6px;
+    font-size: 0.8rem;
+    justify-content: center;
+    text-align: center;
+  }
+  /* Bàn cờ cuộn ngang mượt mà khi màn hình hẹp */
+  .grid-outer-wrapper {
+    padding: 8px;
+    width: 100%;
+  }
+  .grid-scroll-area {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    justify-content: flex-start;
+    padding: 8px 4px;
+  }
+  /* Modal nhập từ vựng co giãn vừa màn hình điện thoại */
+  .modal-dialog {
+    max-height: 94vh;
+    margin: 10px;
+  }
+  .modal-footer {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+  .modal-footer-right {
+    width: 100%;
+    flex-direction: column;
+  }
+  .modal-footer .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  /* Cột gợi ý (Clues) */
+  .clues-panel {
+    max-height: none;
+  }
+}
