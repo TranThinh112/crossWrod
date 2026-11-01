@@ -965,16 +965,247 @@ body {
   background: var(--success);
 }
 
-/* Print Friendly */
+﻿/* ==========================================================================
+   PRINT STYLESHEET (THIẾT KẾ IN CHUYÊN NGHIỆP: MÀU & TRẮNG ĐEN)
+   ========================================================================== */
 @media print {
-  body { background: white; }
-  .app-header, .sidebar, .puzzle-toolbar, .grid-legend, #toast, .modal-backdrop {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm 12mm 12mm;
+  }
+
+  /* 1. Bật in nền màu đầy đủ của trình duyệt (background graphics) */
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 10pt;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Ẩn toàn bộ nút bấm, thanh điều hướng, toolbar web không cần in */
+  .app-header,
+  .sidebar,
+  .puzzle-toolbar,
+  .grid-legend,
+  #toast,
+  .modal-backdrop,
+  .btn,
+  #btnEditTitle,
+  .btn-speak-clue,
+  #noExerciseState {
     display: none !important;
   }
-  .app-body { display: block; }
-  .crossword-layout-container { display: flex; flex-direction: column; }
-  .card { border: none; box-shadow: none; padding: 0; }
+
+  .app-container, .app-body, .main-content {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  .puzzle-card {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+  }
+
+  /* Header bài tập khi in */
+  .puzzle-header {
+    border-bottom: 2px solid #334155 !important;
+    padding-bottom: 6px !important;
+    margin-bottom: 12px !important;
+  }
+  .puzzle-title-view h2 {
+    font-size: 16pt !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+  }
+  .puzzle-meta {
+    gap: 12px !important;
+    font-size: 8.5pt !important;
+    color: #475569 !important;
+  }
+
+  /* Layout chính: Lưới ô chữ nằm ở trên, danh sách câu hỏi ở dưới */
+  .crossword-layout-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+  }
+
+  /* Khung bàn cờ ô chữ */
+  .grid-outer-wrapper {
+    border: none !important;
+    padding: 0 !important;
+    background: transparent !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    margin-bottom: 8px !important;
+  }
+  .grid-scroll-area {
+    padding: 0 !important;
+    overflow: visible !important;
+    justify-content: center !important;
+  }
+
+  /* BÀN CỜ CROSSWORD: GIỐNG Y HỆT TRÊN WEB, CÓ VIỀN ĐẬM RÕ NÉT */
+  .crossword-grid {
+    border: 2.5px solid #1e3a8a !important; /* Viền bao ngoài đậm */
+    background: transparent !important;
+  }
+
+  /* CÁC Ô CÓ CHỮ (TRẮNG HOẶC ĐANG NHẬP): IN ĐẬM RÕ RÀNG */
+  .grid-cell:not(.black-cell) {
+    background-color: #ffffff !important;
+    border: 1.5px solid #1d4ed8 !important; /* Viền ô có chữ in đậm nổi bật */
+    box-sizing: border-box !important;
+    z-index: 1;
+  }
+
+  /* Ô TRỐNG KHÔNG CÓ CHỮ (Ô NỀN MỜ BLACK-CELL): GIỮ NỀN XANH NHẠT NHƯ WEB */
+  .grid-cell.black-cell {
+    background-color: #e0e7ff !important; /* Nền xanh tím nhạt chuẩn y hệt trên web */
+    border: 0.5px solid #bfdbfe !important; /* Viền mảnh phân biệt rõ với ô chữ */
+  }
+
+  /* Số thứ tự câu hỏi ở góc ô: In đậm, sắc nét */
+  .grid-cell .cell-number {
+    font-size: 7.5pt !important;
+    font-weight: 800 !important;
+    color: #1e3a8a !important;
+    top: 1px !important;
+    left: 2px !important;
+  }
+
+  /* Chữ cái trong ô */
+  .grid-cell input.cell-input {
+    font-size: 11pt !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+  }
+
+  /* Ký tự đặc biệt (gạch nối "-" và dấu cách): Rõ ràng, nền dịu */
+  .grid-cell.symbol-grid-cell {
+    background-color: #f1f5f9 !important;
+    border: 1.5px solid #1d4ed8 !important;
+    color: #0f172a !important;
+    font-weight: 900 !important;
+  }
+
+  /* Bỏ hiệu ứng active/focus khi in để trang in sạch đẹp */
+  .grid-cell.active-cell {
+    outline: none !important;
+  }
+
+  /* DANH SÁCH CÂU HỎI & GỢI Ý (CLUES PANEL): CHIA 2 CỘT GỌN GÀNG */
+  .clues-panel {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 14px !important;
+    max-height: none !important;
+    overflow: visible !important;
+    page-break-before: auto !important;
+  }
+  .clue-column {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 6px !important;
+    padding: 8px 10px !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  .clue-header {
+    font-size: 9.5pt !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    border-bottom: 2px solid #334155 !important;
+    padding-bottom: 4px !important;
+    margin-bottom: 6px !important;
+  }
+  .clue-list {
+    gap: 6px !important;
+  }
+  .clue-item {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-left: 3.5px solid #3b82f6 !important;
+    padding: 5px 7px !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  .clue-title-line {
+    font-size: 8pt !important;
+    color: #0f172a !important;
+  }
+  .clue-num {
+    font-weight: 800 !important;
+    color: #1d4ed8 !important;
+  }
+  .clue-pos {
+    background: #e0e7ff !important;
+    color: #3730a3 !important;
+    border: 0.5px solid #c7d2fe !important;
+  }
+  .blank-slot {
+    border-bottom: 1.5px solid #334155 !important;
+    color: #0f172a !important;
+    font-size: 8.5pt !important;
+    font-weight: 700 !important;
+  }
+
+  /* ==========================================================================
+     XỬ LÝ ĐẶC THÙ CHO TRƯỜNG HỢP MÁY IN TRẮNG ĐEN (MONOCHROME PRINTING)
+     ========================================================================== */
+  @media (monochrome), (color-index: 0) {
+    .crossword-grid {
+      border: 3px solid #000000 !important;
+    }
+    .grid-cell:not(.black-cell) {
+      background-color: #ffffff !important;
+      border: 2px solid #000000 !important; /* Viền ô chữ đen tuyền, cực nét */
+    }
+    .grid-cell.black-cell {
+      background-color: #f1f5f9 !important; /* Nền xám rất nhạt chống tốn mực và nổi bật ô chữ */
+      border: 0.5px solid #cbd5e1 !important;
+    }
+    .grid-cell .cell-number {
+      color: #000000 !important;
+    }
+    .grid-cell.symbol-grid-cell {
+      border: 2px solid #000000 !important;
+      color: #000000 !important;
+      background-color: #f8fafc !important;
+    }
+    .clue-item {
+      border-left: 3.5px solid #000000 !important;
+      border-color: #94a3b8 !important;
+    }
+    .clue-num {
+      color: #000000 !important;
+    }
+    .clue-pos {
+      background: #f1f5f9 !important;
+      color: #000000 !important;
+      border: 1px solid #94a3b8 !important;
+    }
+    .blank-slot {
+      border-bottom-color: #000000 !important;
+    }
+  }
 }
+
 
 /* Trạng thái bôi đen từ (khi bấm Ctrl + A vào từ) */
 .grid-cell.word-selected {
