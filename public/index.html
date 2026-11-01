@@ -24,7 +24,7 @@
       html, body {
         background: #ffffff !important;
         color: #000000 !important;
-        font-size: 11pt;
+        font-size: 10pt;
         margin: 0 !important;
         padding: 0 !important;
         width: 100% !important;
@@ -73,37 +73,50 @@
       }
 
       .crossword-layout-container {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 16px !important;
+        display: block !important;
         width: 100% !important;
       }
 
-      /* 2. KHUNG BÀN CỜ Ô CHỮ */
+      /* 2. KHUNG BÀN CỜ Ô CHỮ: TRANG 1 TRỌN VẸN (PAGE-BREAK-AFTER: ALWAYS) */
       .grid-outer-wrapper {
         border: none !important;
         padding: 0 !important;
-        margin: 0 auto 12px auto !important;
+        margin: 0 auto !important;
         background: transparent !important;
         display: flex !important;
+        flex-direction: column !important;
         justify-content: center !important;
         align-items: center !important;
+        page-break-after: always !important; /* Bàn cờ nằm trọn vẹn ở trang 1 */
+        break-after: page !important;
         page-break-inside: avoid !important;
         break-inside: avoid !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
       }
 
       .grid-scroll-area {
         padding: 0 !important;
-        margin: 0 !important;
+        margin: 0 auto !important;
         overflow: visible !important;
+        display: flex !important;
         justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        max-width: 100% !important;
       }
 
+      /* TỰ ĐỘNG THU PHÓNG BÀN CỜ VỪA KHÍT CHIỀU NGANG VÀ CHIỀU DỌC TRANG IN A4 */
       .crossword-grid {
         border: 2.5px solid #000000 !important;
         background: transparent !important;
+        margin: 0 auto !important;
         page-break-inside: avoid !important;
         break-inside: avoid !important;
+        max-width: 185mm !important; /* Vừa vặn chiều rộng giấy in A4 trừ lề */
+        max-height: 255mm !important; /* Vừa vặn chiều cao trang 1 */
+        box-sizing: border-box !important;
       }
 
       /* ĐỒNG BỘ NÉT CẠNH CÁC Ô CHỮ (1.5PX ĐEN TUYỀN) */
@@ -148,7 +161,7 @@
       }
 
       .grid-cell .cell-number {
-        font-size: 8pt !important;
+        font-size: 7.5pt !important;
         font-weight: 800 !important;
         color: #000000 !important;
         top: 1px !important;
@@ -156,40 +169,41 @@
       }
 
       .grid-cell input.cell-input {
-        font-size: 11pt !important;
+        font-size: 10pt !important;
         font-weight: 800 !important;
         color: #000000 !important;
       }
 
-      /* ==========================================================================
-         PHẦN GỢI Ý & NGHĨA CỦA TỪ (CLUES PANEL): THIẾT KẾ TO RÕ RÀNG, DỄ ĐỌC
+            /* ==========================================================================
+         PHẦN GỢI Ý & NGHĨA CỦA TỪ (CLUES PANEL): SANG TRANG 2 ĐẸP MẮT
          ========================================================================== */
       .clues-panel {
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
-        gap: 16px !important;
+        gap: 12px !important;
         max-height: none !important;
         overflow: visible !important;
         width: 100% !important;
+        page-break-before: always !important; /* Đẩy sang trang 2 rõ ràng */
+        break-before: page !important;
       }
 
       .clue-column {
         background: #ffffff !important;
         border: 1.5px solid #000000 !important;
-        border-radius: 8px !important;
-        padding: 12px 14px !important;
+        border-radius: 6px !important;
+        padding: 8px 10px !important;
         page-break-inside: avoid !important;
         break-inside: avoid !important;
       }
 
-      /* Tiêu đề cột Across / Down to và đậm */
       .clue-header {
-        font-size: 13pt !important;
+        font-size: 11pt !important;
         font-weight: 800 !important;
         color: #000000 !important;
-        border-bottom: 2.5px solid #000000 !important;
-        padding-bottom: 6px !important;
-        margin-bottom: 12px !important;
+        border-bottom: 2px solid #000000 !important;
+        padding-bottom: 4px !important;
+        margin-bottom: 8px !important;
         text-transform: uppercase !important;
         letter-spacing: 0.5px !important;
       }
@@ -197,16 +211,15 @@
       .clue-list {
         display: flex !important;
         flex-direction: column !important;
-        gap: 10px !important;
+        gap: 6px !important;
       }
 
-      /* Khung của từng từ to, rộng rãi */
       .clue-item {
         background: #ffffff !important;
-        border: 1.5px solid #94a3b8 !important;
-        border-left: 5px solid #000000 !important;
-        border-radius: 6px !important;
-        padding: 8px 12px !important;
+        border: 1px solid #94a3b8 !important;
+        border-left: 4px solid #000000 !important;
+        border-radius: 5px !important;
+        padding: 5px 8px !important;
         page-break-inside: avoid !important;
         break-inside: avoid !important;
       }
@@ -215,75 +228,70 @@
       .clue-item.word-completed {
         background-color: #ffffff !important;
         border-color: #94a3b8 !important;
-        border-left: 5px solid #000000 !important;
+        border-left: 4px solid #000000 !important;
       }
 
-      /* Dòng nghĩa chữ to rõ */
       .clue-title-line {
-        font-size: 11pt !important;
+        font-size: 9.5pt !important;
         font-weight: 600 !important;
         color: #000000 !important;
-        line-height: 1.4 !important;
-        margin-bottom: 6px !important;
+        line-height: 1.3 !important;
+        margin-bottom: 4px !important;
         display: flex !important;
         align-items: baseline !important;
-        gap: 6px !important;
+        gap: 5px !important;
       }
 
-      /* Số thứ tự to và đậm */
       .clue-num {
-        font-size: 12pt !important;
+        font-size: 10pt !important;
         font-weight: 800 !important;
         color: #000000 !important;
-        min-width: 22px !important;
+        min-width: 18px !important;
       }
 
-      /* Loại từ (v), (n) to hơn */
       .clue-pos {
         background: #f1f5f9 !important;
         color: #000000 !important;
         border: 1px solid #94a3b8 !important;
-        padding: 1px 6px !important;
-        font-size: 9.5pt !important;
+        padding: 1px 5px !important;
+        font-size: 8.5pt !important;
         font-weight: 700 !important;
-        border-radius: 4px !important;
+        border-radius: 3px !important;
       }
 
       .clue-text {
-        font-size: 11pt !important;
+        font-size: 9.5pt !important;
         font-weight: 600 !important;
       }
 
       .clue-len {
-        font-size: 10pt !important;
+        font-size: 9pt !important;
         font-weight: 600 !important;
         color: #334155 !important;
       }
 
-      /* Khung các ô gạch chân điền đáp án to hơn, khoảng cách thoải mái */
       .clue-answer-blank {
         display: flex !important;
         flex-wrap: wrap !important;
-        gap: 6px !important;
-        margin-top: 4px !important;
-        padding: 2px 0 !important;
+        gap: 4px !important;
+        margin-top: 2px !important;
+        padding: 1px 0 !important;
       }
 
       .blank-slot {
         display: inline-block !important;
-        width: 18px !important;
-        height: 22px !important;
-        line-height: 22px !important;
-        border-bottom: 2px solid #000000 !important;
+        width: 16px !important;
+        height: 19px !important;
+        line-height: 19px !important;
+        border-bottom: 1.5px solid #000000 !important;
         color: #000000 !important;
-        font-size: 11pt !important;
+        font-size: 9.5pt !important;
         font-weight: 800 !important;
         text-align: center !important;
       }
 
-      /* Dấu cách và gạch nối trong ô điền clue */
       .blank-slot.symbol-slot {
-        width: 14px !important;
+        width: 12px !important;
         border-bottom: none !important;
         color: #000000 !important;
         font-weight: 900 !important;

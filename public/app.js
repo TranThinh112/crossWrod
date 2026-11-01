@@ -417,7 +417,57 @@ function bindEvents() {
   btnCheckSolution.addEventListener('click', handleCheckSolution);
   btnRevealAll.addEventListener('click', handleRevealAll);
   btnClearAnswers.addEventListener('click', handleClearAnswers);
-  btnPrint.addEventListener('click', () => window.print());
+    // Tối ưu kích thước ô cờ khi in đảm bảo vừa khít A4 Trang 1
+  let savedScreenGridStyles = null;
+
+  function prepareGridForPrint() {
+    if (!currentExercise || !crosswordGrid) return;
+    savedScreenGridStyles = {
+      calculatedCellSize: crosswordGrid.style.getPropertyValue('--calculated-cell-size'),
+      gridTemplateColumns: crosswordGrid.style.gridTemplateColumns,
+      gridTemplateRows: crosswordGrid.style.gridTemplateRows,
+      width: crosswordGrid.style.width,
+      maxWidth: crosswordGrid.style.maxWidth
+    };
+
+    const numCols = currentExercise.width || 20;
+    const numRows = currentExercise.height || 20;
+
+    // Chiều rộng in khả dụng của A4 portrait là ~185mm (~690px ở 96dpi), chiều cao khả dụng ~250mm (~940px)
+    // Tính toán kích thước ô tối ưu theo cả chiều ngang và chiều dọc để vừa trọn vẹn trong Trang 1
+    const maxPrintWidthPx = 690;
+    const maxPrintHeightPx = 900;
+
+    const cellWidthForPrint = Math.floor(maxPrintWidthPx / numCols);
+    const cellHeightForPrint = Math.floor(maxPrintHeightPx / numRows);
+    let printCellSize = Math.min(cellWidthForPrint, cellHeightForPrint);
+
+    if (printCellSize < 16) printCellSize = 16;
+    if (printCellSize > 34) printCellSize = 34;
+
+    crosswordGrid.style.setProperty('--calculated-cell-size', printCellSize + 'px');
+    crosswordGrid.style.gridTemplateColumns = 'repeat(' + numCols + ', ' + printCellSize + 'px)';
+    crosswordGrid.style.gridTemplateRows = 'repeat(' + numRows + ', ' + printCellSize + 'px)';
+  }
+
+  function restoreGridAfterPrint() {
+    if (!crosswordGrid || !savedScreenGridStyles) return;
+    crosswordGrid.style.setProperty('--calculated-cell-size', savedScreenGridStyles.calculatedCellSize || '');
+    crosswordGrid.style.gridTemplateColumns = savedScreenGridStyles.gridTemplateColumns || '';
+    crosswordGrid.style.gridTemplateRows = savedScreenGridStyles.gridTemplateRows || '';
+    crosswordGrid.style.width = savedScreenGridStyles.width || '';
+    crosswordGrid.style.maxWidth = savedScreenGridStyles.maxWidth || '';
+    savedScreenGridStyles = null;
+  }
+
+  window.addEventListener('beforeprint', prepareGridForPrint);
+  window.addEventListener('afterprint', restoreGridAfterPrint);
+
+  btnPrint.addEventListener('click', () => {
+    prepareGridForPrint();
+    window.print();
+    setTimeout(restoreGridAfterPrint, 500);
+  });
 
   // Chế độ Chọn nhiều bài tập (Batch Select Mode)
   const btnToggleSelectMode = document.getElementById('btnToggleSelectMode');
