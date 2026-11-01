@@ -965,33 +965,39 @@ body {
   background: var(--success);
 }
 
+﻿﻿/* ==========================================================================
+   PRINT STYLESHEET CHUẨN XÁC: CHỈ IN BÀN CỜ VÀ GỢI Ý NGHĨA
+   ========================================================================== */
 ﻿/* ==========================================================================
-   PRINT STYLESHEET (THIẾT KẾ IN CHUYÊN NGHIỆP: MÀU & TRẮNG ĐEN)
+   PRINT STYLESHEET (CHỈ IN BÀN CỜ VÀ GỢI Ý NGHĨA - TÔ ĐẬM Ô CHỨA TỪ)
    ========================================================================== */
 @media print {
   @page {
     size: A4 portrait;
-    margin: 10mm 12mm 12mm 12mm;
+    margin: 8mm 10mm 10mm 10mm;
   }
 
-  /* 1. Bật in nền màu đầy đủ của trình duyệt (background graphics) */
   *, *::before, *::after {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     color-adjust: exact !important;
   }
 
-  body {
+  html, body {
     background: #ffffff !important;
-    color: #0f172a !important;
+    color: #000000 !important;
     font-size: 10pt;
     margin: 0 !important;
     padding: 0 !important;
+    width: 100% !important;
   }
 
-  /* Ẩn toàn bộ nút bấm, thanh điều hướng, toolbar web không cần in */
+  /* Ẩn triệt để toàn bộ các phần phía trên */
+  header,
+  aside,
   .app-header,
   .sidebar,
+  .puzzle-header,
   .puzzle-toolbar,
   .grid-legend,
   #toast,
@@ -999,8 +1005,16 @@ body {
   .btn,
   #btnEditTitle,
   .btn-speak-clue,
-  #noExerciseState {
+  #noExerciseState,
+  .batch-action-bar,
+  .sidebar-header,
+  .exercise-list {
     display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
   }
 
   .app-container, .app-body, .main-content {
@@ -1008,6 +1022,7 @@ body {
     padding: 0 !important;
     margin: 0 !important;
     width: 100% !important;
+    border: none !important;
   }
 
   .puzzle-card {
@@ -1018,106 +1033,93 @@ body {
     background: transparent !important;
   }
 
-  /* Header bài tập khi in */
-  .puzzle-header {
-    border-bottom: 2px solid #334155 !important;
-    padding-bottom: 6px !important;
-    margin-bottom: 12px !important;
-  }
-  .puzzle-title-view h2 {
-    font-size: 16pt !important;
-    font-weight: 800 !important;
-    color: #0f172a !important;
-  }
-  .puzzle-meta {
-    gap: 12px !important;
-    font-size: 8.5pt !important;
-    color: #475569 !important;
-  }
-
-  /* Layout chính: Lưới ô chữ nằm ở trên, danh sách câu hỏi ở dưới */
   .crossword-layout-container {
     display: flex !important;
     flex-direction: column !important;
-    gap: 14px !important;
+    gap: 12px !important;
+    width: 100% !important;
   }
 
   /* Khung bàn cờ ô chữ */
   .grid-outer-wrapper {
     border: none !important;
     padding: 0 !important;
+    margin: 0 auto 10px auto !important;
     background: transparent !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
-    margin-bottom: 8px !important;
   }
+
   .grid-scroll-area {
     padding: 0 !important;
+    margin: 0 !important;
     overflow: visible !important;
     justify-content: center !important;
   }
 
-  /* BÀN CỜ CROSSWORD: GIỐNG Y HỆT TRÊN WEB, CÓ VIỀN ĐẬM RÕ NÉT */
+  /* Khung viền ngoài cùng bàn cờ */
   .crossword-grid {
-    border: 2.5px solid #1e3a8a !important; /* Viền bao ngoài đậm */
+    border: 2.5px solid #000000 !important;
     background: transparent !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 
-  /* CÁC Ô CÓ CHỮ (TRẮNG HOẶC ĐANG NHẬP): IN ĐẬM RÕ RÀNG */
+  /* TÔ ĐẬM VIỀN ĐEN 2PX Ở TẤT CẢ CÁC Ô CHỨA TỪ */
   .grid-cell:not(.black-cell) {
     background-color: #ffffff !important;
-    border: 1.5px solid #1d4ed8 !important; /* Viền ô có chữ in đậm nổi bật */
+    border: 2px solid #000000 !important;
     box-sizing: border-box !important;
-    z-index: 1;
+    z-index: 2 !important;
   }
 
-  /* Ô TRỐNG KHÔNG CÓ CHỮ (Ô NỀN MỜ BLACK-CELL): GIỮ NỀN XANH NHẠT NHƯ WEB */
+  /* Ô TRỐNG (KHÔNG CHỨA TỪ): Nền xám mờ, viền mảnh */
   .grid-cell.black-cell {
-    background-color: #e0e7ff !important; /* Nền xanh tím nhạt chuẩn y hệt trên web */
-    border: 0.5px solid #bfdbfe !important; /* Viền mảnh phân biệt rõ với ô chữ */
+    background-color: #f1f5f9 !important;
+    border: 0.5px solid #cbd5e1 !important;
+    z-index: 0 !important;
   }
 
-  /* Số thứ tự câu hỏi ở góc ô: In đậm, sắc nét */
+  /* Số thứ tự câu hỏi ở góc ô */
   .grid-cell .cell-number {
     font-size: 7.5pt !important;
     font-weight: 800 !important;
-    color: #1e3a8a !important;
+    color: #000000 !important;
     top: 1px !important;
     left: 2px !important;
   }
 
-  /* Chữ cái trong ô */
+  /* Ô gạch nối "-" hoặc dấu cách */
+  .grid-cell.symbol-grid-cell {
+    background-color: #f8fafc !important;
+    border: 2px solid #000000 !important;
+    color: #000000 !important;
+    font-weight: 900 !important;
+    z-index: 2 !important;
+  }
+
   .grid-cell input.cell-input {
     font-size: 11pt !important;
     font-weight: 800 !important;
-    color: #0f172a !important;
+    color: #000000 !important;
   }
 
-  /* Ký tự đặc biệt (gạch nối "-" và dấu cách): Rõ ràng, nền dịu */
-  .grid-cell.symbol-grid-cell {
-    background-color: #f1f5f9 !important;
-    border: 1.5px solid #1d4ed8 !important;
-    color: #0f172a !important;
-    font-weight: 900 !important;
-  }
-
-  /* Bỏ hiệu ứng active/focus khi in để trang in sạch đẹp */
   .grid-cell.active-cell {
     outline: none !important;
   }
 
-  /* DANH SÁCH CÂU HỎI & GỢI Ý (CLUES PANEL): CHIA 2 CỘT GỌN GÀNG */
+  /* Gợi ý và nghĩa của từ (Clues Panel) */
   .clues-panel {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
-    gap: 14px !important;
+    gap: 12px !important;
     max-height: none !important;
     overflow: visible !important;
-    page-break-before: auto !important;
   }
+
   .clue-column {
     background: #ffffff !important;
     border: 1px solid #cbd5e1 !important;
@@ -1126,83 +1128,52 @@ body {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
+
   .clue-header {
     font-size: 9.5pt !important;
     font-weight: 800 !important;
-    color: #0f172a !important;
-    border-bottom: 2px solid #334155 !important;
+    color: #000000 !important;
+    border-bottom: 2px solid #000000 !important;
     padding-bottom: 4px !important;
-    margin-bottom: 6px !important;
+    margin-bottom: 8px !important;
   }
+
   .clue-list {
     gap: 6px !important;
   }
+
   .clue-item {
     background: #ffffff !important;
     border: 1px solid #e2e8f0 !important;
-    border-left: 3.5px solid #3b82f6 !important;
+    border-left: 3.5px solid #000000 !important;
     padding: 5px 7px !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
+
   .clue-title-line {
     font-size: 8pt !important;
-    color: #0f172a !important;
-  }
-  .clue-num {
-    font-weight: 800 !important;
-    color: #1d4ed8 !important;
-  }
-  .clue-pos {
-    background: #e0e7ff !important;
-    color: #3730a3 !important;
-    border: 0.5px solid #c7d2fe !important;
-  }
-  .blank-slot {
-    border-bottom: 1.5px solid #334155 !important;
-    color: #0f172a !important;
-    font-size: 8.5pt !important;
-    font-weight: 700 !important;
+    color: #000000 !important;
   }
 
-  /* ==========================================================================
-     XỬ LÝ ĐẶC THÙ CHO TRƯỜNG HỢP MÁY IN TRẮNG ĐEN (MONOCHROME PRINTING)
-     ========================================================================== */
-  @media (monochrome), (color-index: 0) {
-    .crossword-grid {
-      border: 3px solid #000000 !important;
-    }
-    .grid-cell:not(.black-cell) {
-      background-color: #ffffff !important;
-      border: 2px solid #000000 !important; /* Viền ô chữ đen tuyền, cực nét */
-    }
-    .grid-cell.black-cell {
-      background-color: #f1f5f9 !important; /* Nền xám rất nhạt chống tốn mực và nổi bật ô chữ */
-      border: 0.5px solid #cbd5e1 !important;
-    }
-    .grid-cell .cell-number {
-      color: #000000 !important;
-    }
-    .grid-cell.symbol-grid-cell {
-      border: 2px solid #000000 !important;
-      color: #000000 !important;
-      background-color: #f8fafc !important;
-    }
-    .clue-item {
-      border-left: 3.5px solid #000000 !important;
-      border-color: #94a3b8 !important;
-    }
-    .clue-num {
-      color: #000000 !important;
-    }
-    .clue-pos {
-      background: #f1f5f9 !important;
-      color: #000000 !important;
-      border: 1px solid #94a3b8 !important;
-    }
-    .blank-slot {
-      border-bottom-color: #000000 !important;
-    }
+  .clue-num {
+    font-weight: 800 !important;
+    color: #000000 !important;
+  }
+
+  .clue-pos {
+    background: #f1f5f9 !important;
+    color: #000000 !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 0 4px !important;
+    font-size: 7.5pt !important;
+  }
+
+  .blank-slot {
+    border-bottom: 1.5px solid #000000 !important;
+    color: #000000 !important;
+    font-size: 8.5pt !important;
+    font-weight: 700 !important;
   }
 }
 
