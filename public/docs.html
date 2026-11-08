@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tài liệu Hệ thống - Smart Crossword Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --card-hover: #1e293b;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --accent-glow: rgba(59, 130, 246, 0.25);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --purple: #8b5cf6;
+      --cyan: #06b6d4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 60px;
+    }
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(11, 15, 25, 0.85);
+      border-bottom: 1px solid var(--card-border);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+    .brand-icon { font-size: 1.6rem; }
+    .nav-links { display: flex; gap: 16px; align-items: center; }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .nav-btn-home {
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+    .nav-btn-home:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+    .hero {
+      max-width: 1200px;
+      margin: 40px auto 30px auto;
+      padding: 0 24px;
+      text-align: center;
+    }
+    .badge-hero {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: #60a5fa;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      letter-spacing: 0.5px;
+    }
+    .hero h1 {
+      font-size: 2.6rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #ffffff 30%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .quick-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin: 30px 0 40px 0;
+    }
+    .quick-nav a {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .quick-nav a:hover {
+      color: #fff;
+      border-color: var(--accent);
+      background: var(--card-hover);
+    }
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin: 48px 0 20px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 2px solid var(--card-border);
+      padding-bottom: 12px;
+    }
+    .section-title .section-icon { font-size: 1.4rem; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .feature-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .card-header-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+    .feature-card h3 {
+      font-size: 1.18rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+    .feature-card p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      margin-bottom: 14px;
+      flex-grow: 1;
+    }
+    .feature-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: auto;
+    }
+    .tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: #1f2937;
+      color: #93c5fd;
+      border: 1px solid #374151;
+    }
+    .tag.purple { color: #c4b5fd; background: rgba(139, 92, 246, 0.15); border-color: rgba(139, 92, 246, 0.3); }
+    .tag.green { color: #6ee7b7; background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3); }
+    .tag.amber { color: #fcd34d; background: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.3); }
+    .table-wrapper {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow-x: auto;
+      margin-bottom: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+    thead {
+      background: #1f2937;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    th, td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: rgba(31, 41, 55, 0.5); }
+    .badge-method {
+      display: inline-block;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 4px 8px;
+      border-radius: 4px;
+      min-width: 65px;
+      text-align: center;
+    }
+    .method-get { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
+    .method-post { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid #3b82f6; }
+    .method-put { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; }
+    .method-delete { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+    .endpoint-code {
+      font-family: "JetBrains Mono", monospace;
+      color: #e2e8f0;
+      font-weight: 600;
+    }
+    .kbd {
+      display: inline-block;
+      padding: 2px 7px;
+      font-size: 0.82rem;
+      font-family: "JetBrains Mono", monospace;
+      line-height: 1.4;
+      color: #ffffff;
+      background-color: #1e293b;
+      border: 1px solid #475569;
+      border-radius: 5px;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.4);
+    }
+    pre.code-block {
+      background: #090d16;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.88rem;
+      color: #93c5fd;
+      overflow-x: auto;
+      margin: 10px 0 16px 0;
+    }
+    .callout {
+      background: rgba(30, 41, 59, 0.6);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      margin: 20px 0;
+      color: #cbd5e1;
+      font-size: 0.94rem;
+    }
+    .callout strong { color: #fff; }
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      padding-top: 24px;
+      border-top: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <a href="/" class="brand">
+      <span class="brand-icon">🧩</span>
+      <span>Smart Crossword Generator</span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-btn nav-btn-home">Trở về Ứng dụng</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <span class="badge-hero">SYSTEM ARCHITECTURE &amp; DOCUMENTATION</span>
+    <h1>Tài Liệu Toàn Bộ Chức Năng Hệ Thống</h1>
+    <p>Hệ thống tự động sinh ô chữ từ vựng tiếng Anh (Crossword Generator), nâng cấp kiến trúc Đa người dùng (Multi-User), xác thực bảo mật AccessToken / RefreshToken, kho đề mẫu TOEIC / IELTS và tối ưu in ấn 2 trang tiêu chuẩn A4.</p>
+  </section>
+
+  <div class="container">
+    <div class="quick-nav">
+            
+      <a href="#overview">Tổng quan Kiến trúc</a>
+      <a href="#features">Tính năng Hệ thống</a>
+      <a href="#auth-system">🔐 Xác thực &amp; Google OAuth</a>
+      <a href="#shortcuts">Phím tắt &amp; Thao tác nhập</a>
+      <a href="#print-feature">Chuẩn In Ấn 2 Trang</a>
+      <a href="#api-docs">Đặc tả RESTful API</a>
+      <a href="#data-format">Định dạng Dữ liệu Đầu vào</a>
+    </div>
+
+    
+    <h2 id="overview" class="section-title"><span class="section-icon">🌐</span> 1. Tổng quan Kiến trúc</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="card-header-icon">🖥️</div>
+        <h3>Frontend Giao diện Tương tác</h3>
+        <p>Xây dựng theo chuẩn Vanilla JavaScript, CSS3 Responsive và Flexbox/Grid tối ưu hiệu năng. Hỗ trợ bàn cờ ô chữ tương tác động, bảng danh sách gợi ý Across/Down đồng bộ hai chiều, phát âm âm thanh Web Speech API và chế độ in chuẩn A4.</p>
+        <div class="feature-tags">
+          <span class="tag">HTML5 / CSS3</span>
+          <span class="tag">Vanilla JS</span>
+          <span class="tag">Speech Synthesis</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-header-icon">⚙️</div>
+        <h3>Backend Node.js &amp; Express</h3>
+        <p>Xử lý thuật toán sinh ô chữ thông minh (Crossword Layout Algorithm) tự động tìm giao điểm chữ cái, đặt từ theo chiều ngang/dọc, tính toán ma trận lưới tối ưu kích thước và kiểm tra hợp lệ.</p>
+        <div class="feature-tags">
+          <span class="tag purple">Node.js</span>
+          <span class="tag purple">Express.js</span>
+          <span class="tag purple">Crossword Matrix</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-header-icon">💾</div>
+        <h3>Lưu trữ &amp; Triển khai Đám mây</h3>
+        <p>Dữ liệu bài tập được lưu trữ dạng JSON bền vững. Hỗ trợ cấu hình đường dẫn qua DATA_DIR cho Railway Persistent Volume, giữ nguyên vẹn dữ liệu khi redeploy hoặc chạy trên môi trường cục bộ (Local).</p>
+        <div class="feature-tags">
+          <span class="tag green">JSON Persistence</span>
+          <span class="tag green">Railway Volume</span>
+          <span class="tag green">Environment Config</span>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="features" class="section-title"><span class="section-icon">⚡</span> 2. Chi tiết Toàn bộ Chức năng Hệ thống</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="card-header-icon">📝</div>
+        <h3>1. Nhập từ vựng &amp; Tạo bài tập (Popup Modal)</h3>
+        <p>Bấm nút <strong>Tạo bài tập mới</strong> để mở ô nhập to không cần cuộn. Hỗ trợ paste danh sách từ vựng (tối thiểu 15 từ). Tự động đặt tên mặc định theo ngày hiện tại (DD/MM/YYYY) hoặc cho phép đặt tên bài tập tùy chọn.</p>
+        <div class="feature-tags">
+          <span class="tag">Modal Popup</span>
+          <span class="tag">Tối thiểu 15 từ</span>
+          <span class="tag">Auto DD/MM/YYYY</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-header-icon">🧩</div>
+        <h3>2. Tự động sinh Crossword thông minh</h3>
+        <p>Thuật toán tự động phân tích chữ cái, hỗ trợ đầy đủ các từ phức hợp có chứa <strong>dấu cách</strong> (vd: post office) hoặc <strong>dấu gạch nối</strong> (vd: part-time), tự động tách ô ký tự và giữ nguyên dấu gạch dưới <strong>_</strong> ẩn để người học tự tư duy.</p>
+        <div class="feature-tags">
+          <span class="tag purple">Hỗ trợ Space &amp; Hyphen</span>
+          <span class="tag purple">Tự tìm giao điểm</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-header-icon">📚</div>
+        <h3>3. Quản lý danh sách &amp; Chọn xóa hàng loạt</h3>
+        <p>Sidebar hiển thị toàn bộ bài tập đã lưu theo thời gian. Có nút <strong>Chọn</strong> để bật thanh công cụ hàng loạt: Cho phép tick chọn từng bài hoặc <strong>Chọn tất cả</strong> và xoá đồng thời nhiều bài tập đã chọn.</p>
+        <div class="feature-tags">
+          <span class="tag green">Sidebar History</span>
+          <span class="tag green">Batch Select &amp; Delete</span>
+          <span class="tag green">Đổi tên bài tập</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-header-icon">🔄</div>
+        <h3>4. Đổi bố cục ô chữ mới ngẫu nhiên (Reshuffle)</h3>
+        <p>Nút <strong>Đổi bố cục ô chữ mới</strong> giúp tạo ra cách sắp xếp ô chữ hoàn toàn mới từ cùng một tập từ vựng để ôn tập không nhàm chán. Nút sẽ tự động khóa lại khi người dùng bắt đầu làm bài để bảo vệ tiến trình đang nhập.</p>
+        <div class="feature-tags">
+          <span class="tag amber">Random Layout</span>
+          <span class="tag amber">Smart Lock</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-header-icon">🔍</div>
+        <h3>5. Kiểm tra bài làm &amp; Chấm điểm trực quan</h3>
+        <p>Bấm <strong>Kiểm tra bài làm</strong>: Hệ thống quét toàn bộ bài làm, hiển thị <strong>ô màu đỏ</strong> cho những từ chưa nhập hoặc nhập sai, và <strong>ô màu xanh lá</strong> khi nhập chính xác. Tự động phát âm thanh loa từ vựng.</p>
+        <div class="feature-tags">
+          <span class="tag">Kiểm tra bài làm</span>
+          <span class="tag">Hiện toàn bộ đáp án</span>
+          <span class="tag">Làm lại từ đầu</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-header-icon">🔊</div>
+        <h3>6. Phát âm từ vựng (Text-to-Speech)</h3>
+        <p>Tích hợp bộ đọc phát âm chuẩn tiếng Anh bản xứ (US/UK). Biểu tượng loa chỉ xuất hiện khi từ vựng được người học điền đúng hoặc khi nhấn nút Kiểm tra bài làm, hỗ trợ rèn luyện phát âm trực quan.</p>
+        <div class="feature-tags">
+          <span class="tag green">Web Speech API</span>
+          <span class="tag green">Chuẩn phát âm US/UK</span>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- MỤC MỚI: HỆ THỐNG XÁC THỰC, ĐĂNG NHẬP & GOOGLE OAUTH -->
+    <h2 id="auth-system" class="section-title"><span class="section-icon">🔐</span> 3. Hệ Thống Tài Khoản, Đăng Nhập &amp; Google OAuth 2.0</h2>
+    
+    <div class="callout" style="border-left-color: #3b82f6; background: rgba(59, 130, 246, 0.08);">
+      <strong>Kiến trúc Đa người dùng (Multi-Tenant Architecture):</strong> Mỗi người dùng sở hữu kho bài tập crossword và lịch sử tiến trình độc lập. Hệ thống hỗ trợ đăng nhập bằng Email/Mật khẩu truyền thống hoặc đăng nhập nhanh 1-chạm qua Google Identity Services (OAuth 2.0).
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="card-header-icon">👤</div>
+        <h3>1. Đăng ký &amp; Đăng nhập Email/Mật khẩu</h3>
+        <p>Mật khẩu người dùng được băm an toàn bằng thuật toán <strong>Bcrypt</strong> (salt rounds = 10). Kiểm tra trùng lặp email, xác thực định dạng và cấp phiên làm việc tức thì khi đăng ký/đăng nhập thành công.</p>
+        <div class="feature-tags">
+          <span class="tag green">Bcrypt Hashing</span>
+          <span class="tag green">Email Uniqueness</span>
+          <span class="tag green">Local Auth</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-header-icon">🌐</div>
+        <h3>2. Đăng nhập Google OAuth 2.0</h3>
+        <p>Tích hợp Google Identity Services (GIS). Phía client gửi mã <code>id_token (JWT)</code> của Google lên máy chủ, Backend xác thực chữ ký số qua <code>OAuth2Client.verifyIdToken()</code>, tự động trích xuất thông tin (Email, Tên, Avatar) và khởi tạo tài khoản nếu là lần đầu đăng nhập.</p>
+        <div class="feature-tags">
+          <span class="tag purple">Google One-Tap</span>
+          <span class="tag purple">ID Token JWT</span>
+          <span class="tag purple">OAuth 2.0 Verified</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-header-icon">🛡️</div>
+        <h3>3. Cơ chế Token Kép (Access &amp; Refresh Token)</h3>
+        <p><strong>AccessToken:</strong> Có hiệu lực trong 15 phút, dùng để xác thực nhanh trong Header <code>Authorization: Bearer</code>.<br><strong>RefreshToken:</strong> Có hiệu lực 14 ngày, lưu trong <strong>HttpOnly Cookie</strong> chống rò rỉ XSS. Áp dụng <em>Token Rotation</em> và thu hồi phiên (Revocation) để ngăn chặn hành vi sử dụng lại token đánh cắp.</p>
+        <div class="feature-tags">
+          <span class="tag amber">AccessToken 15m</span>
+          <span class="tag amber">HttpOnly Cookie</span>
+          <span class="tag amber">Token Rotation</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-header-icon">🔑</div>
+        <h3>4. Quên Mật Khẩu &amp; Đặt Lại Mật Khẩu</h3>
+        <p>Quy trình khôi phục tài khoản qua trang chuyên biệt <code>/reset-password</code>. Khi có yêu cầu, hệ thống sinh mã ngẫu nhiên bảo mật 32-bytes có hiệu lực trong vòng 15 phút. Khi đặt lại mật khẩu mới thành công, toàn bộ Refresh Token trên các thiết bị khác sẽ tự động bị thu hồi.</p>
+        <div class="feature-tags">
+          <span class="tag">Reset Token 15m</span>
+          <span class="tag">Auto Session Revoke</span>
+          <span class="tag">Anti-Enumeration</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-header-icon">📚</div>
+        <h3>5. Kho Bài Mẫu Sẵn Có (TOEIC &amp; IELTS)</h3>
+        <p>Cung cấp các bộ từ vựng tuyển chọn (TOEIC Contracts, TOEIC Corporate, IELTS Academic Chữ A, Từ ghép đời sống). Người dùng chỉ cần bấm <strong>1-Click Clone</strong> là hệ thống tự động sinh một bàn cờ Crossword mới vào tài khoản cá nhân để ôn tập.</p>
+        <div class="feature-tags">
+          <span class="tag green">TOEIC 600</span>
+          <span class="tag green">IELTS Academic</span>
+          <span class="tag green">1-Click Clone</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-header-icon">💾</div>
+        <h3>6. Cơ Sở Dữ Liệu Bảng Quan Hệ (Relational DB)</h3>
+        <p>Chuyển đổi từ file JSON đơn sang hệ cơ sở dữ liệu quan hệ hoàn chỉnh (SQLite WAL mode / PostgreSQL-ready) gồm 6 bảng: <code>users</code>, <code>refresh_tokens</code>, <code>password_resets</code>, <code>vocabulary_templates</code>, <code>exercises</code>, <code>user_progress</code> đảm bảo toàn vẹn dữ liệu.</p>
+        <div class="feature-tags">
+          <span class="tag purple">Foreign Keys ON</span>
+          <span class="tag purple">WAL Concurrency</span>
+          <span class="tag purple">Multi-Tenant</span>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="shortcuts" class="section-title"><span class="section-icon">⌨️</span> 4. Cơ chế Phím tắt &amp; Trải nghiệm Nhập liệu</h2>
+    <div class="callout">
+      <strong>Cơ chế tự động nhảy con trỏ &amp; hỗ trợ bộ gõ:</strong> Khi gõ một chữ cái tiếng Anh hoặc tiếng Việt (Telex/VNI), ký tự lập tức hiển thị đồng thời cả trên ô bàn cờ bên trái và dòng gạch dưới bên phải, sau đó tự động nhảy sang ô tiếp theo.
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 25%;">Phím / Tổ hợp phím</th>
+            <th style="width: 35%;">Thao tác thực hiện</th>
+            <th style="width: 40%;">Hành vi chi tiết</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="kbd">Tab</span></td>
+            <td>Chuyển từ tiếp theo</td>
+            <td>Di chuyển thứ tự từ trên xuống dưới, từ trái qua phải; ưu tiên từ hàng ngang (Across) rồi đến hàng dọc (Down).</td>
+          </tr>
+          <tr>
+            <td><span class="kbd">Backspace</span></td>
+            <td>Lùi lại &amp; Xoá ký tự</td>
+            <td>Lùi về ô trước đó đồng thời xoá ký tự vừa lùi về ngay lập tức (không cần bấm 2 lần).</td>
+          </tr>
+          <tr>
+            <td><span class="kbd">Up</span> / <span class="kbd">Down</span></td>
+            <td>Nhảy từ theo cột gợi ý</td>
+            <td>Nhảy con trỏ lên từ phía trên hoặc xuống từ phía dưới tương ứng theo danh sách cột gợi ý.</td>
+          </tr>
+          <tr>
+            <td><span class="kbd">Left</span> / <span class="kbd">Right</span></td>
+            <td>Di chuyển ô trong từ</td>
+            <td>Tiến hoặc lùi 1 ô ký tự trong cùng một từ đang kích hoạt.</td>
+          </tr>
+          <tr>
+            <td><span class="kbd">Ctrl</span> + <span class="kbd">A</span></td>
+            <td>Bôi đen toàn bộ từ đang trỏ</td>
+            <td>Bôi đen nhanh từ đang nhập để dễ dàng sửa hoặc xoá.</td>
+          </tr>
+          <tr>
+            <td><span class="kbd">Ctrl</span> + <span class="kbd">Shift</span> + <span class="kbd">Delete</span></td>
+            <td>Xoá toàn bộ từ đang chọn</td>
+            <td>Xoá sạch các ký tự đã điền trong từ đang chọn về trạng thái gạch dưới ban đầu.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="print-feature" class="section-title"><span class="section-icon">🖨️</span> 5. Chuẩn In Ấn 2 Trang Tiêu Chuẩn (A4)</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="card-header-icon">📄</div>
+        <h3>Trang 1: Bàn cờ Ô chữ (Crossword Grid)</h3>
+        <p>Bàn cờ ô chữ được tự động tính toán kích thước ô dựa trên kích thước lưới (Math.min(690 / cols, 900 / rows)), căn giữa hoàn hảo trên mặt giấy A4. Đường viền ô chữ in màu đen sắc nét (2px solid #000000), không lẫn các nút bấm, không bị tràn sang trang thứ hai.</p>
+        <div class="feature-tags">
+          <span class="tag green">Page 1 Full Grid</span>
+          <span class="tag green">Borders 2px Sharp</span>
+          <span class="tag green">No Yellow Highlights</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-header-icon">📋</div>
+        <h3>Trang 2: Danh sách Gợi ý (Across &amp; Down Clues)</h3>
+        <p>Sử dụng cơ chế page-break-before: always tách biệt hoàn toàn sang Trang 2. Bố trí 2 cột gợi ý tinh gọn song song, hiển thị số thứ tự, loại từ (n), (v), (adj), nghĩa tiếng Việt và các ô gạch chân để học sinh điền bút mực.</p>
+        <div class="feature-tags">
+          <span class="tag purple">Page 2 Clues</span>
+          <span class="tag purple">2 Columns Parallel</span>
+          <span class="tag purple">Writing Underlines</span>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="api-docs" class="section-title"><span class="section-icon">🔌</span> 6. Đặc Tả RESTful API Backend</h2>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Phương thức</th>
+            <th>Endpoint</th>
+            <th>Mô tả chi tiết</th>
+            <th>Payload / Tham số</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge-method method-post">POST</span></td>
+            <td><span class="endpoint-code">/api/exercises/generate</span></td>
+            <td>Tự động sinh bài tập crossword mới từ danh sách từ vựng (tối thiểu 15 từ)</td>
+            <td><code>{ wordsText: string, title?: string }</code></td>
+          </tr>
+          <tr>
+            <td><span class="badge-method method-get">GET</span></td>
+            <td><span class="endpoint-code">/api/exercises</span></td>
+            <td>Lấy danh sách tóm tắt tất cả bài tập đã lưu (ID, tên, ngày tạo, kích thước lưới)</td>
+            <td><em>Không</em></td>
+          </tr>
+          <tr>
+            <td><span class="badge-method method-get">GET</span></td>
+            <td><span class="endpoint-code">/api/exercises/:id</span></td>
+            <td>Lấy chi tiết cấu trúc ma trận và gợi ý của 1 bài tập cụ thể</td>
+            <td><code>:id</code> (ID bài tập)</td>
+          </tr>
+          <tr>
+            <td><span class="badge-method method-put">PUT</span></td>
+            <td><span class="endpoint-code">/api/exercises/:id/rename</span></td>
+            <td>Đổi tên bài tập đã lưu</td>
+            <td><code>{ title: string }</code></td>
+          </tr>
+          <tr>
+            <td><span class="badge-method method-delete">DELETE</span></td>
+            <td><span class="endpoint-code">/api/exercises/:id</span></td>
+            <td>Xóa một bài tập theo ID</td>
+            <td><code>:id</code> (ID bài tập)</td>
+          </tr>
+          <tr>
+            <td><span class="badge-method method-post">POST</span></td>
+            <td><span class="endpoint-code">/api/exercises/batch-delete</span></td>
+            <td>Xóa nhiều bài tập đồng thời theo danh sách ID</td>
+            <td><code>{ ids: string[] }</code></td>
+          </tr>
+          <tr>
+            <td><span class="badge-method method-post">POST</span></td>
+            <td><span class="endpoint-code">/api/exercises/:id/regenerate-layout</span></td>
+            <td>Xáo trộn và sinh bố cục ô chữ hoàn toàn mới từ danh sách từ gốc của bài tập</td>
+            <td><code>:id</code> (ID bài tập)</td>
+          </tr>
+          <tr>
+            <td><span class="badge-method method-get">GET</span></td>
+            <td><span class="endpoint-code">/docs</span></td>
+            <td>Trang hiển thị toàn bộ tài liệu đặc tả chức năng hệ thống</td>
+            <td><em>Giao diện Web</em></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="data-format" class="section-title"><span class="section-icon">📝</span> 7. Định dạng Dữ liệu Đầu vào Hỗ trợ</h2>
+    <p style="color: #9ca3af; margin-bottom: 12px;">Hệ thống chấp nhận các định dạng từ vựng linh hoạt kèm từ loại và nghĩa tiếng Việt:</p>
+    <pre class="code-block">abandon : (v) từ bỏ, bỏ rơi
+ability : (n) khả năng, năng lực
+academic : (adj) tính chất học thuật
+post office : (n) bưu điện
+part-time : (adj) bán thời gian
+accelerate - (v) tăng tốc, thúc đẩy</pre>
+    <p style="color: #9ca3af; font-size: 0.9rem;">Người dùng có thể phân cách từ và nghĩa bằng dấu hai chấm <code>:</code>, dấu tab hoặc dấu gạch nối <code> - </code>. Từ loại như <code>(v)</code>, <code>(n)</code>, <code>(adj)</code> sẽ tự động được trích xuất và hiển thị cạnh nghĩa của từ.</p>
+
+  </div>
+
+  <footer>
+    <p>Smart Crossword Generator © 2026 • Designed for High-Performance Vocabulary Learning &amp; Interactive Practice.</p>
+  </footer>
+</body>
+</html>

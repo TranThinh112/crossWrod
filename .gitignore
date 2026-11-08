@@ -1,3 +1,8 @@
 node_modules
 .env
 .DS_Store
+# SQLite database files
+*.db
+*.db-wal
+*.db-shm
+data/*.db*

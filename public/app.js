@@ -81,7 +81,7 @@ function restoreUserProgress() {
       // Kiểm tra và bật nền xanh nếu từ hoàn thành đúng
       if (currentExercise.placements) {
         currentExercise.placements.forEach(p => {
-          checkAndHandleCompletedWord(p.y, p.x);
+            checkAndHandleCompletedWord(p.y, p.x, { shouldSpeak: false });
         });
       }
     }
@@ -1414,7 +1414,8 @@ function speakEnglishWord(word) {
 }
 
 // Kiểm tra xem từ có vừa được hoàn thành đúng 100% không
-function checkAndHandleCompletedWord(r, c) {
+function checkAndHandleCompletedWord(r, c, options = {}) {
+    const shouldSpeak = options.shouldSpeak !== false;
   if (!currentExercise || !currentExercise.placements) return;
 
   currentExercise.placements.forEach(p => {
@@ -1441,8 +1442,10 @@ function checkAndHandleCompletedWord(r, c) {
       if (isFullWordCorrect) {
         if (clueEl && !clueEl.classList.contains('word-completed')) {
           clueEl.classList.add('word-completed');
-          speakEnglishWord(p.rawWord);
-          showToast('🎉 Chính xác từ: ' + p.rawWord + '!', 'success');
+            if (shouldSpeak) {
+              speakEnglishWord(p.rawWord);
+              showToast('🎉 Chính xác từ: ' + p.rawWord + '!', 'success');
+            }
         }
         for (let k = 0; k < p.cleanWord.length; k++) {
           const cr = p.y + k * dy;
